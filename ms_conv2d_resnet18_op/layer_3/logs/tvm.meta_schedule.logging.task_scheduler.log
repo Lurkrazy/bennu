@@ -1,0 +1,94 @@
+2025-09-11 20:30:38 [INFO] Logging directory: ./layer_3/logs
+2025-09-11 20:31:36 [DEBUG] XGB iter   0: tr-p-rmse: 0.594985	tr-a-peak@32: 1.000000	tr-rmse: 0.281741	tr-rmse: 0.281741
+2025-09-11 20:31:36 [DEBUG] XGB iter  25: tr-p-rmse: 0.037728	tr-a-peak@32: 1.000000	tr-rmse: 0.354463	tr-rmse: 0.354463
+2025-09-11 20:31:36 [DEBUG] XGB iter  50: tr-p-rmse: 0.037728	tr-a-peak@32: 1.000000	tr-rmse: 0.354463	tr-rmse: 0.354463
+2025-09-11 20:31:36 [DEBUG] XGB stopped. Best iteration: [17] tr-p-rmse:0.03773	tr-a-peak@32:1.00000	tr-rmse:0.35446	tr-rmse:0.35446 
+2025-09-11 20:32:32 [DEBUG] XGB validation: p-rmse: 0.132784	a-peak@32: 1.000000
+2025-09-11 20:32:32 [DEBUG] XGB iter   0: tr-p-rmse: 0.585584	tr-a-peak@32: 0.895027	tr-rmse: 0.262936	tr-rmse: 0.262936
+2025-09-11 20:32:32 [DEBUG] XGB iter  25: tr-p-rmse: 0.031204	tr-a-peak@32: 1.000000	tr-rmse: 0.329559	tr-rmse: 0.329559
+2025-09-11 20:32:32 [DEBUG] XGB iter  50: tr-p-rmse: 0.031204	tr-a-peak@32: 1.000000	tr-rmse: 0.329559	tr-rmse: 0.329559
+2025-09-11 20:32:32 [DEBUG] XGB stopped. Best iteration: [18] tr-p-rmse:0.03120	tr-a-peak@32:1.00000	tr-rmse:0.32956	tr-rmse:0.32956 
+2025-09-11 20:33:43 [DEBUG] XGB validation: p-rmse: 0.387207	a-peak@32: 0.912538
+2025-09-11 20:33:43 [DEBUG] XGB iter   0: tr-p-rmse: 0.582106	tr-a-peak@32: 0.998429	tr-rmse: 0.304877	tr-rmse: 0.304877
+2025-09-11 20:33:43 [DEBUG] XGB iter  25: tr-p-rmse: 0.034232	tr-a-peak@32: 1.000000	tr-rmse: 0.370319	tr-rmse: 0.370319
+2025-09-11 20:33:43 [DEBUG] XGB iter  50: tr-p-rmse: 0.034232	tr-a-peak@32: 1.000000	tr-rmse: 0.370320	tr-rmse: 0.370320
+2025-09-11 20:33:43 [DEBUG] XGB iter  75: tr-p-rmse: 0.034232	tr-a-peak@32: 1.000000	tr-rmse: 0.370319	tr-rmse: 0.370319
+2025-09-11 20:33:43 [DEBUG] XGB stopped. Best iteration: [25] tr-p-rmse:0.03423	tr-a-peak@32:1.00000	tr-rmse:0.37032	tr-rmse:0.37032 
+2025-09-11 20:34:52 [DEBUG] XGB validation: p-rmse: 0.146958	a-peak@32: 0.962831
+2025-09-11 20:34:52 [DEBUG] XGB iter   0: tr-p-rmse: 0.533040	tr-a-peak@32: 0.985299	tr-rmse: 0.349087	tr-rmse: 0.349087
+2025-09-11 20:34:52 [DEBUG] XGB iter  25: tr-p-rmse: 0.029053	tr-a-peak@32: 0.999564	tr-rmse: 0.429427	tr-rmse: 0.429427
+2025-09-11 20:34:52 [DEBUG] XGB iter  50: tr-p-rmse: 0.029009	tr-a-peak@32: 0.999564	tr-rmse: 0.429506	tr-rmse: 0.429506
+2025-09-11 20:34:52 [DEBUG] XGB iter  75: tr-p-rmse: 0.029009	tr-a-peak@32: 0.999564	tr-rmse: 0.429506	tr-rmse: 0.429506
+2025-09-11 20:34:52 [DEBUG] XGB stopped. Best iteration: [30] tr-p-rmse:0.02901	tr-a-peak@32:0.99956	tr-rmse:0.42951	tr-rmse:0.42951 
+2025-09-11 20:36:02 [DEBUG] XGB validation: p-rmse: 0.258571	a-peak@32: 0.997140
+2025-09-11 20:36:02 [DEBUG] XGB iter   0: tr-p-rmse: 0.506618	tr-a-peak@32: 0.991382	tr-rmse: 0.389354	tr-rmse: 0.389354
+2025-09-11 20:36:02 [DEBUG] XGB iter  25: tr-p-rmse: 0.030618	tr-a-peak@32: 0.996794	tr-rmse: 0.469758	tr-rmse: 0.469758
+2025-09-11 20:36:02 [DEBUG] XGB iter  50: tr-p-rmse: 0.029307	tr-a-peak@32: 0.996794	tr-rmse: 0.469839	tr-rmse: 0.469839
+2025-09-11 20:36:02 [DEBUG] XGB iter  75: tr-p-rmse: 0.029307	tr-a-peak@32: 0.996794	tr-rmse: 0.469839	tr-rmse: 0.469839
+2025-09-11 20:36:02 [DEBUG] XGB stopped. Best iteration: [33] tr-p-rmse:0.02931	tr-a-peak@32:0.99679	tr-rmse:0.46984	tr-rmse:0.46984 
+2025-09-11 20:37:07 [DEBUG] XGB validation: p-rmse: 0.075469	a-peak@32: 0.994814
+2025-09-11 20:37:07 [DEBUG] XGB iter   0: tr-p-rmse: 0.489651	tr-a-peak@32: 0.989988	tr-rmse: 0.431769	tr-rmse: 0.431769
+2025-09-11 20:37:07 [DEBUG] XGB iter  25: tr-p-rmse: 0.028913	tr-a-peak@32: 0.994268	tr-rmse: 0.508695	tr-rmse: 0.508695
+2025-09-11 20:37:07 [DEBUG] XGB iter  50: tr-p-rmse: 0.028910	tr-a-peak@32: 0.994268	tr-rmse: 0.508703	tr-rmse: 0.508703
+2025-09-11 20:37:07 [DEBUG] XGB iter  75: tr-p-rmse: 0.028910	tr-a-peak@32: 0.994268	tr-rmse: 0.508703	tr-rmse: 0.508703
+2025-09-11 20:37:07 [DEBUG] XGB stopped. Best iteration: [27] tr-p-rmse:0.02891	tr-a-peak@32:0.99427	tr-rmse:0.50870	tr-rmse:0.50870 
+2025-09-11 20:38:11 [DEBUG] XGB validation: p-rmse: 0.107898	a-peak@32: 0.992784
+2025-09-11 20:38:11 [DEBUG] XGB iter   0: tr-p-rmse: 0.471117	tr-a-peak@32: 0.993209	tr-rmse: 0.447340	tr-rmse: 0.447340
+2025-09-11 20:38:11 [DEBUG] XGB iter  25: tr-p-rmse: 0.027756	tr-a-peak@32: 0.993366	tr-rmse: 0.525357	tr-rmse: 0.525357
+2025-09-11 20:38:11 [DEBUG] XGB iter  50: tr-p-rmse: 0.027754	tr-a-peak@32: 0.993366	tr-rmse: 0.525361	tr-rmse: 0.525361
+2025-09-11 20:38:11 [DEBUG] XGB iter  75: tr-p-rmse: 0.027754	tr-a-peak@32: 0.993366	tr-rmse: 0.525361	tr-rmse: 0.525361
+2025-09-11 20:38:12 [DEBUG] XGB stopped. Best iteration: [28] tr-p-rmse:0.02775	tr-a-peak@32:0.99337	tr-rmse:0.52536	tr-rmse:0.52536 
+2025-09-11 20:39:15 [DEBUG] XGB validation: p-rmse: 0.024499	a-peak@32: 0.997044
+2025-09-11 20:39:15 [DEBUG] XGB iter   0: tr-p-rmse: 0.457409	tr-a-peak@32: 0.995021	tr-rmse: 0.458230	tr-rmse: 0.458230
+2025-09-11 20:39:15 [DEBUG] XGB iter  25: tr-p-rmse: 0.027184	tr-a-peak@32: 0.995530	tr-rmse: 0.536317	tr-rmse: 0.536317
+2025-09-11 20:39:15 [DEBUG] XGB iter  50: tr-p-rmse: 0.026440	tr-a-peak@32: 0.996566	tr-rmse: 0.536336	tr-rmse: 0.536336
+2025-09-11 20:39:15 [DEBUG] XGB iter  75: tr-p-rmse: 0.026440	tr-a-peak@32: 0.996566	tr-rmse: 0.536336	tr-rmse: 0.536336
+2025-09-11 20:39:15 [DEBUG] XGB stopped. Best iteration: [33] tr-p-rmse:0.02644	tr-a-peak@32:0.99657	tr-rmse:0.53634	tr-rmse:0.53634 
+2025-09-11 20:40:20 [DEBUG] XGB validation: p-rmse: 0.023639	a-peak@32: 0.998066
+2025-09-11 20:40:20 [DEBUG] XGB iter   0: tr-p-rmse: 0.434354	tr-a-peak@32: 0.998496	tr-rmse: 0.453398	tr-rmse: 0.453398
+2025-09-11 20:40:20 [DEBUG] XGB iter  25: tr-p-rmse: 0.026929	tr-a-peak@32: 0.999280	tr-rmse: 0.533886	tr-rmse: 0.533886
+2025-09-11 20:40:20 [DEBUG] XGB iter  50: tr-p-rmse: 0.026928	tr-a-peak@32: 0.999280	tr-rmse: 0.533888	tr-rmse: 0.533888
+2025-09-11 20:40:20 [DEBUG] XGB iter  75: tr-p-rmse: 0.026928	tr-a-peak@32: 0.999280	tr-rmse: 0.533888	tr-rmse: 0.533888
+2025-09-11 20:40:20 [DEBUG] XGB stopped. Best iteration: [26] tr-p-rmse:0.02693	tr-a-peak@32:0.99928	tr-rmse:0.53389	tr-rmse:0.53389 
+2025-09-11 20:41:25 [DEBUG] XGB validation: p-rmse: 0.128640	a-peak@32: 0.994970
+2025-09-11 20:41:25 [DEBUG] XGB iter   0: tr-p-rmse: 0.427318	tr-a-peak@32: 0.953087	tr-rmse: 0.447421	tr-rmse: 0.447421
+2025-09-11 20:41:25 [DEBUG] XGB iter  25: tr-p-rmse: 0.027011	tr-a-peak@32: 1.000000	tr-rmse: 0.529480	tr-rmse: 0.529480
+2025-09-11 20:41:25 [DEBUG] XGB iter  50: tr-p-rmse: 0.026756	tr-a-peak@32: 0.999280	tr-rmse: 0.529497	tr-rmse: 0.529497
+2025-09-11 20:41:25 [DEBUG] XGB iter  75: tr-p-rmse: 0.026756	tr-a-peak@32: 0.999280	tr-rmse: 0.529497	tr-rmse: 0.529497
+2025-09-11 20:41:25 [DEBUG] XGB stopped. Best iteration: [30] tr-p-rmse:0.02676	tr-a-peak@32:0.99928	tr-rmse:0.52950	tr-rmse:0.52950 
+2025-09-11 20:42:34 [DEBUG] XGB validation: p-rmse: 0.113794	a-peak@32: 0.999225
+2025-09-11 20:42:34 [DEBUG] XGB iter   0: tr-p-rmse: 0.422392	tr-a-peak@32: 0.989127	tr-rmse: 0.442131	tr-rmse: 0.442131
+2025-09-11 20:42:34 [DEBUG] XGB iter  25: tr-p-rmse: 0.029143	tr-a-peak@32: 0.999701	tr-rmse: 0.525706	tr-rmse: 0.525706
+2025-09-11 20:42:34 [DEBUG] XGB iter  50: tr-p-rmse: 0.025816	tr-a-peak@32: 0.999757	tr-rmse: 0.525721	tr-rmse: 0.525721
+2025-09-11 20:42:34 [DEBUG] XGB iter  75: tr-p-rmse: 0.025816	tr-a-peak@32: 0.999757	tr-rmse: 0.525721	tr-rmse: 0.525721
+2025-09-11 20:42:34 [DEBUG] XGB stopped. Best iteration: [39] tr-p-rmse:0.02582	tr-a-peak@32:0.99976	tr-rmse:0.52572	tr-rmse:0.52572 
+2025-09-11 20:43:43 [DEBUG] XGB validation: p-rmse: 0.090244	a-peak@32: 0.995286
+2025-09-11 20:43:43 [DEBUG] XGB iter   0: tr-p-rmse: 0.419938	tr-a-peak@32: 0.990537	tr-rmse: 0.437999	tr-rmse: 0.437999
+2025-09-11 20:43:43 [DEBUG] XGB iter  25: tr-p-rmse: 0.028553	tr-a-peak@32: 0.999280	tr-rmse: 0.522417	tr-rmse: 0.522417
+2025-09-11 20:43:43 [DEBUG] XGB iter  50: tr-p-rmse: 0.025117	tr-a-peak@32: 1.000000	tr-rmse: 0.522426	tr-rmse: 0.522426
+2025-09-11 20:43:43 [DEBUG] XGB iter  75: tr-p-rmse: 0.025117	tr-a-peak@32: 1.000000	tr-rmse: 0.522426	tr-rmse: 0.522426
+2025-09-11 20:43:43 [DEBUG] XGB stopped. Best iteration: [37] tr-p-rmse:0.02512	tr-a-peak@32:1.00000	tr-rmse:0.52243	tr-rmse:0.52243 
+2025-09-11 20:44:51 [DEBUG] XGB validation: p-rmse: 0.039464	a-peak@32: 0.995718
+2025-09-11 20:44:51 [DEBUG] XGB iter   0: tr-p-rmse: 0.414237	tr-a-peak@32: 0.979342	tr-rmse: 0.432825	tr-rmse: 0.432825
+2025-09-11 20:44:51 [DEBUG] XGB iter  25: tr-p-rmse: 0.027453	tr-a-peak@32: 0.999280	tr-rmse: 0.518717	tr-rmse: 0.518717
+2025-09-11 20:44:51 [DEBUG] XGB iter  50: tr-p-rmse: 0.024892	tr-a-peak@32: 0.999280	tr-rmse: 0.518758	tr-rmse: 0.518758
+2025-09-11 20:44:51 [DEBUG] XGB iter  75: tr-p-rmse: 0.024892	tr-a-peak@32: 0.999280	tr-rmse: 0.518758	tr-rmse: 0.518758
+2025-09-11 20:44:51 [DEBUG] XGB stopped. Best iteration: [39] tr-p-rmse:0.02489	tr-a-peak@32:0.99928	tr-rmse:0.51876	tr-rmse:0.51876 
+2025-09-11 20:45:57 [DEBUG] XGB validation: p-rmse: 0.086571	a-peak@32: 0.886180
+2025-09-11 20:45:57 [DEBUG] XGB iter   0: tr-p-rmse: 0.413536	tr-a-peak@32: 0.990931	tr-rmse: 0.430449	tr-rmse: 0.430449
+2025-09-11 20:45:57 [DEBUG] XGB iter  25: tr-p-rmse: 0.026234	tr-a-peak@32: 0.998895	tr-rmse: 0.516947	tr-rmse: 0.516947
+2025-09-11 20:45:57 [DEBUG] XGB iter  50: tr-p-rmse: 0.025051	tr-a-peak@32: 0.998956	tr-rmse: 0.516996	tr-rmse: 0.516996
+2025-09-11 20:45:57 [DEBUG] XGB iter  75: tr-p-rmse: 0.025051	tr-a-peak@32: 0.998956	tr-rmse: 0.516996	tr-rmse: 0.516996
+2025-09-11 20:45:57 [DEBUG] XGB stopped. Best iteration: [35] tr-p-rmse:0.02505	tr-a-peak@32:0.99896	tr-rmse:0.51699	tr-rmse:0.51699 
+2025-09-11 20:47:05 [DEBUG] XGB validation: p-rmse: 0.118726	a-peak@32: 0.987786
+2025-09-11 20:47:05 [DEBUG] XGB iter   0: tr-p-rmse: 0.410074	tr-a-peak@32: 0.995605	tr-rmse: 0.430265	tr-rmse: 0.430265
+2025-09-11 20:47:05 [DEBUG] XGB iter  25: tr-p-rmse: 0.026464	tr-a-peak@32: 0.999503	tr-rmse: 0.517164	tr-rmse: 0.517164
+2025-09-11 20:47:05 [DEBUG] XGB iter  50: tr-p-rmse: 0.024913	tr-a-peak@32: 0.999313	tr-rmse: 0.517197	tr-rmse: 0.517197
+2025-09-11 20:47:05 [DEBUG] XGB iter  75: tr-p-rmse: 0.024913	tr-a-peak@32: 0.999313	tr-rmse: 0.517197	tr-rmse: 0.517197
+2025-09-11 20:47:06 [DEBUG] XGB stopped. Best iteration: [36] tr-p-rmse:0.02491	tr-a-peak@32:0.99931	tr-rmse:0.51719	tr-rmse:0.51719 
+2025-09-11 20:48:04 [DEBUG] XGB validation: p-rmse: 0.030807	a-peak@32: 0.999013
+2025-09-11 20:48:04 [DEBUG] XGB iter   0: tr-p-rmse: 0.406746	tr-a-peak@32: 0.985142	tr-rmse: 0.430351	tr-rmse: 0.430351
+2025-09-11 20:48:04 [DEBUG] XGB iter  25: tr-p-rmse: 0.026491	tr-a-peak@32: 0.999223	tr-rmse: 0.517514	tr-rmse: 0.517514
+2025-09-11 20:48:04 [DEBUG] XGB iter  50: tr-p-rmse: 0.026246	tr-a-peak@32: 0.999223	tr-rmse: 0.517558	tr-rmse: 0.517558
+2025-09-11 20:48:04 [DEBUG] XGB iter  75: tr-p-rmse: 0.026246	tr-a-peak@32: 0.999223	tr-rmse: 0.517558	tr-rmse: 0.517558
+2025-09-11 20:48:04 [DEBUG] XGB stopped. Best iteration: [32] tr-p-rmse:0.02625	tr-a-peak@32:0.99922	tr-rmse:0.51756	tr-rmse:0.51756 
