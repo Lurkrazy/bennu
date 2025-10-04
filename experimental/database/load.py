@@ -71,6 +71,40 @@ def dump_cuda_artifacts(rt_mod, out_dir, stem="kernel"):
             print(f"[saved] {ptx_path}")
     except Exception as e:
         print(f"[warn] get_source('ptx') failed: {e}")
+        
+    # asm
+    try:
+        sm_asm = dev_mod.get_source("sass")
+        if sm_asm and len(sm_asm) > 0:
+            sass_path = os.path.join(out_dir, f"{stem}.sass")
+            with open(sass_path, "w") as f:
+                f.write(sm_asm)
+            print(f"[saved] {sass_path}")
+    except Exception as e:
+        print(f"[warn] get_source('sass') failed: {e}")
+    
+    # asm
+    try:
+        sm_asm = dev_mod.get_source("asm")
+        if sm_asm and len(sm_asm) > 0:
+            asm_path = os.path.join(out_dir, f"{stem}.asm")
+            with open(asm_path, "w") as f:
+                f.write(sm_asm)
+            print(f"[saved] {asm_path}")
+    except Exception as e:
+        print(f"[warn] get_source('asm') failed: {e}")
+
+    # cubin
+    try:
+        cubin = dev_mod.get_binary("cubin")
+        if cubin and len(cubin) > 0:
+            cubin_path = os.path.join(out_dir, f"{stem}.cubin")
+            with open(cubin_path, "wb") as f:
+                f.write(cubin)
+            print(f"[saved] {cubin_path}")
+    except Exception as e:
+        print(f"[warn] get_binary('cubin') failed: {e}")
+    
 
 
 def load_database(work_dir: str) -> ms.database.JSONDatabase:
