@@ -21,7 +21,17 @@ def get_tvm_target():
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-from src.utils import *
+import json
+def get_ms_time(log):
+    best_time = [9999]
+    with open(log, "r", encoding="utf-8") as log_file:
+        for line in log_file.readlines():
+            data = json.loads(line)
+            params = data[1]
+            time = params[1]
+            if np.mean(best_time) > np.mean(time):
+                best_time = time
+    return best_time
 
 ## ------------------ ResNet-18 Shapes ---------------------
 # (batch, C, H, W, K, _, R, S, _, stride, padding, dilation, groups)
@@ -94,7 +104,6 @@ def ms_execute(mod, logfile, target, target_name, trials):
     print(f"Tuning Time (min): {tuning_time:.2f}")
     
     return mean_time, std_time, tuning_time
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("python mm.py -a x86 -l 'results/ms/cpu_matmul'")
