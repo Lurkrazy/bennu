@@ -346,29 +346,27 @@ __host__ __device__ half4 make_half4(__half x, __half y, __half z, __half w) {
 extern "C" __global__ void __launch_bounds__(64) main_kernel(half* __restrict__ A, half* __restrict__ W, half* __restrict__ conv2d_nchw);
 extern "C" __global__ void __launch_bounds__(64) main_kernel(half* __restrict__ A, half* __restrict__ W, half* __restrict__ conv2d_nchw) {
   extern __shared__ uchar buf_dyn_shmem[];
-  nvcuda::wmma::fragment<nvcuda::wmma::accumulator, 16, 16, 16, half> conv2d_nchw_reindex_shared_dyn_wmma_accumulator[2];
+  nvcuda::wmma::fragment<nvcuda::wmma::accumulator, 16, 16, 16, half> conv2d_nchw_reindex_shared_dyn_wmma_accumulator[4];
   nvcuda::wmma::fragment<nvcuda::wmma::matrix_a, 16, 16, 16, half, nvcuda::wmma::row_major> pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[1];
-  nvcuda::wmma::fragment<nvcuda::wmma::matrix_b, 16, 16, 16, half, nvcuda::wmma::row_major> W_reindex_pad_shared_dyn_wmma_matrix_b[2];
-  for (int ax1_0_4_init = 0; ax1_0_4_init < 2; ++ax1_0_4_init) {
+  nvcuda::wmma::fragment<nvcuda::wmma::matrix_b, 16, 16, 16, half, nvcuda::wmma::row_major> W_reindex_pad_shared_dyn_wmma_matrix_b[4];
+  for (int ax1_0_4_init = 0; ax1_0_4_init < 4; ++ax1_0_4_init) {
     nvcuda::wmma::fill_fragment(conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4_init], 0.000000e+00f);
   }
-  for (int ax2_0_0 = 0; ax2_0_0 < 10; ++ax2_0_0) {
+  for (int ax2_0_0 = 0; ax2_0_0 < 5; ++ax2_0_0) {
     __syncthreads();
-    if (((int)threadIdx.y) < 1) {
-      for (int ax0_ax1_fused_3_s = 0; ax0_ax1_fused_3_s < 8; ++ax0_ax1_fused_3_s) {
-        half condval;
-        if (((((((((ax2_0_0 * 16) + ((((int)threadIdx.x) & 1) * 8)) + ax0_ax1_fused_3_s) < 147) && (3 <= (((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 16)) + (((int)threadIdx.x) >> 1)) / 112) * 2) + (((((ax2_0_0 * 16) + ((((int)threadIdx.x) & 1) * 8)) + ax0_ax1_fused_3_s) % 49) / 7)))) && ((((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 16)) + (((int)threadIdx.x) >> 1)) / 112) * 2) + (((((ax2_0_0 * 16) + ((((int)threadIdx.x) & 1) * 8)) + ax0_ax1_fused_3_s) % 49) / 7)) < 227)) && (3 <= (((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 16)) + (((int)threadIdx.x) >> 1)) % 112) * 2) + (((((((int)threadIdx.x) & 1) * 8) + (ax2_0_0 * 2)) + ax0_ax1_fused_3_s) % 7)))) && ((((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 16)) + (((int)threadIdx.x) >> 1)) % 112) * 2) + (((((((int)threadIdx.x) & 1) * 8) + (ax2_0_0 * 2)) + ax0_ax1_fused_3_s) % 7)) < 227))) {
-          condval = A[((((((((((ax2_0_0 * 16) + ((((int)threadIdx.x) & 1) * 8)) + ax0_ax1_fused_3_s) / 49) * 50176) + ((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 16)) + (((int)threadIdx.x) >> 1)) / 112) * 448)) + ((((((ax2_0_0 * 16) + ((((int)threadIdx.x) & 1) * 8)) + ax0_ax1_fused_3_s) % 49) / 7) * 224)) + ((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 16)) + (((int)threadIdx.x) >> 1)) % 112) * 2)) + (((((((int)threadIdx.x) & 1) * 8) + (ax2_0_0 * 2)) + ax0_ax1_fused_3_s) % 7)) - 675)];
-        } else {
-          condval = __float2half_rn(0.000000e+00f);
-        }
-        ((half*)buf_dyn_shmem)[((((((int)threadIdx.y) * 640) + ((((int)threadIdx.x) >> 1) * 40)) + ((((int)threadIdx.x) & 1) * 8)) + ax0_ax1_fused_3_s)] = condval;
+    for (int ax0_ax1_fused_3_s = 0; ax0_ax1_fused_3_s < 8; ++ax0_ax1_fused_3_s) {
+      half condval;
+      if (((((((((ax2_0_0 * 32) + ((((int)threadIdx.x) & 3) * 8)) + ax0_ax1_fused_3_s) < 147) && (3 <= (((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 8)) + (((int)threadIdx.x) >> 2)) / 112) * 2) + (((((ax2_0_0 * 32) + ((((int)threadIdx.x) & 3) * 8)) + ax0_ax1_fused_3_s) % 49) / 7)))) && ((((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 8)) + (((int)threadIdx.x) >> 2)) / 112) * 2) + (((((ax2_0_0 * 32) + ((((int)threadIdx.x) & 3) * 8)) + ax0_ax1_fused_3_s) % 49) / 7)) < 227)) && (3 <= (((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 8)) + (((int)threadIdx.x) >> 2)) % 112) * 2) + (((((((int)threadIdx.x) & 3) * 8) + (ax2_0_0 * 4)) + ax0_ax1_fused_3_s) % 7)))) && ((((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 8)) + (((int)threadIdx.x) >> 2)) % 112) * 2) + (((((((int)threadIdx.x) & 3) * 8) + (ax2_0_0 * 4)) + ax0_ax1_fused_3_s) % 7)) < 227))) {
+        condval = A[((((((((((ax2_0_0 * 32) + ((((int)threadIdx.x) & 3) * 8)) + ax0_ax1_fused_3_s) / 49) * 50176) + ((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 8)) + (((int)threadIdx.x) >> 2)) / 112) * 448)) + ((((((ax2_0_0 * 32) + ((((int)threadIdx.x) & 3) * 8)) + ax0_ax1_fused_3_s) % 49) / 7) * 224)) + ((((((((int)blockIdx.y) * 256) + (((int)blockIdx.x) * 16)) + (((int)threadIdx.y) * 8)) + (((int)threadIdx.x) >> 2)) % 112) * 2)) + (((((((int)threadIdx.x) & 3) * 8) + (ax2_0_0 * 4)) + ax0_ax1_fused_3_s) % 7)) - 675)];
+      } else {
+        condval = __float2half_rn(0.000000e+00f);
       }
+      ((half*)buf_dyn_shmem)[((((((int)threadIdx.y) * 320) + ((((int)threadIdx.x) >> 2) * 40)) + ((((int)threadIdx.x) & 3) * 8)) + ax0_ax1_fused_3_s)] = condval;
     }
-    for (int ax0_ax1_fused_0 = 0; ax0_ax1_fused_0 < 4; ++ax0_ax1_fused_0) {
+    for (int ax0_ax1_fused_0 = 0; ax0_ax1_fused_0 < 8; ++ax0_ax1_fused_0) {
       half4 condval_1;
-      if ((((((ax2_0_0 * 16) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)) < 147)) {
-        int4 v_ = make_int4((((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 16)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*0), (((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 16)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*1), (((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 16)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*2), (((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 16)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*3));
+      if ((((((ax2_0_0 * 32) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)) < 147)) {
+        int4 v_ = make_int4((((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 32)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*0), (((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 32)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*1), (((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 32)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*2), (((((((((int)threadIdx.x) & 15) * 588) + (ax2_0_0 * 32)) + (ax0_ax1_fused_0 * 4)) + (((int)threadIdx.y) * 2)) + (((int)threadIdx.x) >> 4)))+(147*3));
         condval_1 = make_half4(W[v_.x],W[v_.y],W[v_.z],W[v_.w]);
       } else {
         condval_1 = make_half4(__float2half_rn(0.000000e+00f), __float2half_rn(0.000000e+00f), __float2half_rn(0.000000e+00f), __float2half_rn(0.000000e+00f));
@@ -376,17 +374,19 @@ extern "C" __global__ void __launch_bounds__(64) main_kernel(half* __restrict__ 
       *(half4*)(((half*)buf_dyn_shmem) + (((((ax0_ax1_fused_0 * 288) + (((int)threadIdx.y) * 144)) + ((((int)threadIdx.x) >> 4) * 72)) + ((((int)threadIdx.x) & 15) * 4)) + 640)) = condval_1;
     }
     __syncthreads();
-    nvcuda::wmma::load_matrix_sync(pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[0], (&(((half*)buf_dyn_shmem)[0])), 40);
-    for (int ax1_0 = 0; ax1_0 < 2; ++ax1_0) {
-      nvcuda::wmma::load_matrix_sync(W_reindex_pad_shared_dyn_wmma_matrix_b[ax1_0], (&(((half*)buf_dyn_shmem)[(((((int)threadIdx.y) * 32) + (ax1_0 * 16)) + 640)])), 72);
-    }
-    for (int ax1_0_4 = 0; ax1_0_4 < 2; ++ax1_0_4) {
-      nvcuda::wmma::mma_sync(conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4], pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[0], W_reindex_pad_shared_dyn_wmma_matrix_b[ax1_0_4], conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4]);
+    for (int ax2_0_1 = 0; ax2_0_1 < 2; ++ax2_0_1) {
+      nvcuda::wmma::load_matrix_sync(pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[0], (&(((half*)buf_dyn_shmem)[(ax2_0_1 * 16)])), 40);
+      for (int ax1_0 = 0; ax1_0 < 4; ++ax1_0) {
+        nvcuda::wmma::load_matrix_sync(W_reindex_pad_shared_dyn_wmma_matrix_b[ax1_0], (&(((half*)buf_dyn_shmem)[(((ax2_0_1 * 1152) + (ax1_0 * 16)) + 640)])), 72);
+      }
+      for (int ax1_0_4 = 0; ax1_0_4 < 4; ++ax1_0_4) {
+        nvcuda::wmma::mma_sync(conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4], pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[0], W_reindex_pad_shared_dyn_wmma_matrix_b[ax1_0_4], conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4]);
+      }
     }
   }
   __syncthreads();
-  for (int ax3 = 0; ax3 < 2; ++ax3) {
-    nvcuda::wmma::store_matrix_sync((&(((half*)buf_dyn_shmem)[(((((int)threadIdx.y) * 512) + (ax3 * 256)) + 640)])), conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax3], 16, nvcuda::wmma::mem_row_major);
+  for (int ax3 = 0; ax3 < 4; ++ax3) {
+    nvcuda::wmma::store_matrix_sync((&(((half*)buf_dyn_shmem)[((ax3 * 256) + 640)])), conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax3], 16, nvcuda::wmma::mem_row_major);
   }
   __syncthreads();
   for (int ax0_ax1_ax3_ax4_ax5_fused_0 = 0; ax0_ax1_ax3_ax4_ax5_fused_0 < 4; ++ax0_ax1_ax3_ax4_ax5_fused_0) {
