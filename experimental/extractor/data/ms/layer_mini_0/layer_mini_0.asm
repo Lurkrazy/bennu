@@ -349,8 +349,8 @@ extern "C" __global__ void __launch_bounds__(64) main_kernel(half* __restrict__ 
   nvcuda::wmma::fragment<nvcuda::wmma::accumulator, 16, 16, 16, half> conv2d_nchw_reindex_shared_dyn_wmma_accumulator[4];
   nvcuda::wmma::fragment<nvcuda::wmma::matrix_a, 16, 16, 16, half, nvcuda::wmma::row_major> pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[1];
   nvcuda::wmma::fragment<nvcuda::wmma::matrix_b, 16, 16, 16, half, nvcuda::wmma::row_major> W_reindex_pad_shared_dyn_wmma_matrix_b[4];
-  for (int ax1_0_4_init = 0; ax1_0_4_init < 4; ++ax1_0_4_init) {
-    nvcuda::wmma::fill_fragment(conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4_init], 0.000000e+00f);
+  for (int ax1_0_3_init = 0; ax1_0_3_init < 4; ++ax1_0_3_init) {
+    nvcuda::wmma::fill_fragment(conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_3_init], 0.000000e+00f);
   }
   for (int ax2_0_0 = 0; ax2_0_0 < 5; ++ax2_0_0) {
     __syncthreads();
@@ -379,8 +379,8 @@ extern "C" __global__ void __launch_bounds__(64) main_kernel(half* __restrict__ 
       for (int ax1_0 = 0; ax1_0 < 4; ++ax1_0) {
         nvcuda::wmma::load_matrix_sync(W_reindex_pad_shared_dyn_wmma_matrix_b[ax1_0], (&(((half*)buf_dyn_shmem)[(((ax2_0_1 * 1152) + (ax1_0 * 16)) + 640)])), 72);
       }
-      for (int ax1_0_4 = 0; ax1_0_4 < 4; ++ax1_0_4) {
-        nvcuda::wmma::mma_sync(conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4], pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[0], W_reindex_pad_shared_dyn_wmma_matrix_b[ax1_0_4], conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_4]);
+      for (int ax1_0_3 = 0; ax1_0_3 < 4; ++ax1_0_3) {
+        nvcuda::wmma::mma_sync(conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_3], pad_temp_reindex_pad_shared_dyn_wmma_matrix_a[0], W_reindex_pad_shared_dyn_wmma_matrix_b[ax1_0_3], conv2d_nchw_reindex_shared_dyn_wmma_accumulator[ax1_0_3]);
       }
     }
   }

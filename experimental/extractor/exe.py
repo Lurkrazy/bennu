@@ -13,6 +13,7 @@ import numpy as np
 import time
 import tvm.topi as topi
 from tvm import te
+from tvm import testing
 
 def get_ms_time(log):
     best_time = [9999]
@@ -478,15 +479,13 @@ if __name__ == "__main__":
                         std_ms = np.std(run_secs) * 1000
                         print(f"Run result: mean {mean_ms:.6f} ms, std {std_ms:.6f} ms")
     
-                        # Correctness check using PyTorch fp16 reference; fallback to a numpy fp16-like implementation.
+                        # Correctness check using PyTorch only.
                         try:
                             import torch
                             import torch.nn.functional as F
-                            have_torch = True
-                        except Exception as torch_err:
-                            print(f"[warn] PyTorch import failed (will use numpy fp16 reference): {torch_err}")
-                            have_torch = False
-    
+                        except Exception as e:
+                            raise RuntimeError("PyTorch is required for reference correctness checks") from e
+ 
                         try:
                             # Determine scheduled output buffer (prefer 3rd arg)
                             sched_out = None
@@ -494,112 +493,57 @@ if __name__ == "__main__":
                                 sched_out = results[2]
                             elif isinstance(results, (list, tuple)) and len(results) >= 1:
                                 sched_out = results[-1]
-    
+ 
                             if sched_out is None:
-                                print("[warn] no scheduled output available for correctness check")
-                            else:
-                                # Convert scheduled output to float16 numpy if possible
+                                raise RuntimeError("No scheduled output available for correctness check")
+ 
+                            # Ensure scheduled output is a numpy array of float16
+                            try:
+                                sched_out = np.array(sched_out).astype(np.float16)
+                            except Exception:
+                                sched_out = np.array(sched_out, dtype=np.float32).astype(np.float16)
+ 
+                            # Compute reference using PyTorch (prefer fp16 on CUDA, fall back to fp32->fp16 using torch)
+                            use_cuda = torch.cuda.is_available()
+                            device_torch = torch.device("cuda" if use_cuda else "cpu")
+                            t_input = torch.from_numpy(a_np.astype(np.float16)).to(device_torch)
+                            t_weight = torch.from_numpy(w_np.astype(np.float16)).to(device_torch)
+ 
+                            with torch.no_grad():
                                 try:
-                                    sched_fp16 = sched_out.astype(np.float16)
+                                    ref_t = F.conv2d(
+                                        t_input,
+                                        t_weight,
+                                        bias=None,
+                                        stride=strides,
+                                        padding=paddings,
+                                        dilation=dilations,
+                                        groups=groups,
+                                    )
                                 except Exception:
-                                    sched_fp16 = sched_out.astype(np.float32).astype(np.float16)
-    
-                                # Compute reference in fp16 when possible
-                                if have_torch:
-                                    try:
-                                        # Prefer GPU fp16 if available
-                                        use_cuda = torch.cuda.is_available()
-                                        device_torch = torch.device("cuda" if use_cuda else "cpu")
-    
-                                        t_input = torch.from_numpy(a_np.astype(np.float16)).to(device_torch)
-                                        t_weight = torch.from_numpy(w_np.astype(np.float16)).to(device_torch)
-    
-                                        with torch.no_grad():
-                                            # Perform conv in fp16
-                                            ref_t = F.conv2d(
-                                                t_input,
-                                                t_weight,
-                                                bias=None,
-                                                stride=strides,
-                                                padding=paddings,
-                                                dilation=dilations,
-                                                groups=groups,
-                                            )
-                                        ref_np = ref_t.cpu().numpy().astype(np.float16)
-                                    except Exception as e_torch_fp16:
-                                        # Fallback: compute in fp32 then cast to fp16 with warning
-                                        print(f"[warn] PyTorch fp16 conv failed, falling back to fp32->fp16: {e_torch_fp16}")
-                                        t_input = torch.from_numpy(a_np.astype(np.float32))
-                                        t_weight = torch.from_numpy(w_np.astype(np.float32))
-                                        with torch.no_grad():
-                                            ref = F.conv2d(
-                                                t_input,
-                                                t_weight,
-                                                bias=None,
-                                                stride=strides,
-                                                padding=paddings,
-                                                dilation=dilations,
-                                                groups=groups,
-                                            )
-                                        ref_np = ref.cpu().numpy().astype(np.float16)
-                                else:
-                                    # Numpy fp16-like convolution: accumulate in float16 to mimic fp16 behavior
-                                    def conv2d_numpy_fp16(inp, w, stride, padding, dilation, groups):
-                                        # inp: N,C,H,W  w: K,C, R,S
-                                        inp_h = inp.astype(np.float16)
-                                        w_h = w.astype(np.float16)
-                                        N, C_in, H_in, W_in = inp_h.shape
-                                        K, Cw, R, S = w_h.shape
-                                        assert C_in == Cw or Cw * groups == C_in, "channel mismatch"
-                                        out_h = (H_in + 2 * padding - dilation * (R - 1) - 1) // stride + 1
-                                        out_w = (W_in + 2 * padding - dilation * (S - 1) - 1) // stride + 1
-                                        out = np.zeros((N, K, out_h, out_w), dtype=np.float16)
-                                        pad_top = pad_bottom = padding
-                                        pad_left = pad_right = padding
-                                        inp_padded = np.pad(inp_h, ((0,0),(0,0),(pad_top,pad_bottom),(pad_left,pad_right)), mode="constant", constant_values=0).astype(np.float16)
-                                        for n in range(N):
-                                            for k in range(K):
-                                                for oh in range(out_h):
-                                                    for ow in range(out_w):
-                                                        acc = np.float16(0.0)
-                                                        for c in range(C_in):
-                                                            for r in range(R):
-                                                                for s in range(S):
-                                                                    ih = oh * stride + r * dilation
-                                                                    iw = ow * stride + s * dilation
-                                                                    prod = np.float16(inp_padded[n, c, ih, iw] * w_h[k, c, r, s])
-                                                                    acc = np.float16(acc + prod)
-                                                        out[n, k, oh, ow] = acc
-                                        return out
-                                    ref_np = conv2d_numpy_fp16(a_np, w_np, stride=strides[0], padding=paddings[0], dilation=dilations[0], groups=groups)
-    
-                                # Prepare arrays for comparison: bring both to float32 for numeric diagnostics but computed as fp16
-                                ref_cmp = ref_np.astype(np.float32)
-                                sched_cmp = sched_fp16.astype(np.float32)
-    
-                                # Align shapes if necessary
-                                if sched_cmp.shape != ref_cmp.shape:
-                                    try:
-                                        sched_cmp = sched_cmp.reshape(ref_cmp.shape)
-                                    except Exception:
-                                        pass
-    
-                                abs_diff = np.abs(sched_cmp - ref_cmp)
-                                max_diff = float(np.max(abs_diff))
-                                mean_diff = float(np.mean(abs_diff))
-                                rel_max = max_diff / (np.max(np.abs(ref_cmp)) + 1e-8)
-    
-                                # Use fp16-specific tolerances (atol / rtol).
-                                # Typical choices: 1e-2 or 1e-3; default to 1e-2 here.
-                                atol_fp16 = 1e-2
-                                rtol_fp16 = 1e-2
-                                # pass when arrays are elementwise close under fp16 tolerances
-                                pass_condition = np.allclose(ref_cmp, sched_cmp, rtol=rtol_fp16, atol=atol_fp16)
-    
-                                print(f"[check] ref (fp16) shape: {ref_cmp.shape}, sched shape: {sched_cmp.shape}")
-                                print(f"[check] max_abs_diff={max_diff:.6e}, mean_abs_diff={mean_diff:.6e}, rel_max={rel_max:.6e}")
-                                print(f"[check] tolerances: atol={atol_fp16}, rtol={rtol_fp16}")
-                                print(f"[check] correctness (vs fp16 reference): {'PASS' if pass_condition else 'FAIL'}")
+                                    # compute in fp32 via torch and cast to fp16
+                                    t_input32 = torch.from_numpy(a_np.astype(np.float32)).to(device_torch)
+                                    t_weight32 = torch.from_numpy(w_np.astype(np.float32)).to(device_torch)
+                                    ref32 = F.conv2d(
+                                        t_input32,
+                                        t_weight32,
+                                        bias=None,
+                                        stride=strides,
+                                        padding=paddings,
+                                        dilation=dilations,
+                                        groups=groups,
+                                    )
+                                    ref_t = ref32.half()
+ 
+                            ref_np = ref_t.cpu().numpy().astype(np.float16)
+ 
+                            # Strict correctness check using tvm.testing.assert_allclose
+                            try:
+                                tvm.testing.assert_allclose(sched_out, ref_np, atol=1e-2, rtol=1e-2)
+                                print(f"[check] correctness (vs fp16 reference): PASS")
+                            except Exception:
+                                print(f"[check] correctness (vs fp16 reference): FAIL")
+                                raise
                         except Exception as e:
                             print(f"[warn] reference check failed: {e}")
                     except Exception as e:
@@ -611,4 +555,4 @@ if __name__ == "__main__":
 
         print(f"Layer {i}: {shape} done.")
         print("-" * 50)
-        print(f"Mean time (ms): {mean_time:.6f}, Std time (ms): {std_time:.6f}")
+        print(f"Read from log: Mean time (ms): {mean_time:.6f}, Std time (ms): {std_time:.6f}")
