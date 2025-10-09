@@ -43,7 +43,6 @@ def get_best_tile_sizes(log):
     
     return best_tile_sizes
 
-# # 使用
 # log_file = "/workspace/tvm-dev/bennu/experimental/benchmarks/layer_6/database_tuning_record.json"
 
 # tile_sizes = get_best_tile_sizes(log_file)

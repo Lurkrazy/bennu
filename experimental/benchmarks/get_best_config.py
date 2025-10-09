@@ -9,8 +9,8 @@ def get_best_config(log):
         for line in log_file.readlines():
             data = json.loads(line)
             params = data[1]
-            tile_sizes = params[0][-1]  # 获取 tile size 配置
-            time = params[1]  # 获取执行时间
+            tile_sizes = params[0][-1]  # get tile sizes
+            time = params[1]  # get execution time
             
             if np.mean(best_time) > np.mean(time):
                 best_time = time
@@ -18,7 +18,7 @@ def get_best_config(log):
     
     return best_tile_sizes, best_time
 
-# 使用示例
+# Example usage
 log_file = "/workspace/tvm-dev/bennu/experimental/benchmarks/layer_6/database_tuning_record.json"
 tile_sizes, execution_time = get_best_config(log_file)
 

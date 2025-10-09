@@ -19,9 +19,9 @@ logs_path = [
 
 def export_times_to_csv(json_path):
     """
-    从JSON文件中提取时间数据并导出到CSV文件
+    Extract time data from a JSON file and export it to a CSV file.
     """
-    # 生成CSV文件路径（与JSON文件在同一目录）
+    # Generate the CSV file path (in the same directory as the JSON file)
     csv_path = json_path.replace("database_tuning_record.json", "times.csv")
     
     times_data = []
@@ -31,29 +31,29 @@ def export_times_to_csv(json_path):
             try:
                 data = json.loads(line)
                 params = data[1]
-                time = params[1]  # 时间数组
+                time = params[1]  # Time array
                 
-                # 将时间数据添加到列表
+                # Add the time data to the list
                 times_data.append({
                     'line_number': line_num,
                     'mean_time': np.mean(time),
                     'min_time': np.min(time),
                     'max_time': np.max(time),
                     'std_time': np.std(time),
-                    'times': time  # 原始时间数组
+                    'times': time  # Original time array
                 })
             except (json.JSONDecodeError, KeyError, IndexError) as e:
                 print(f"Error parsing line {line_num} in {json_path}: {e}")
                 continue
     
-    # 写入CSV文件
+    # Write to the CSV file
     with open(csv_path, "w", newline="", encoding="utf-8") as csv_file:
         if times_data:
-            # 获取时间数组的最大长度
+            # Get the maximum length of the time arrays
             max_time_len = max(len(item['times']) for item in times_data)
             
             fieldnames = ['line_number', 'mean_time', 'min_time', 'max_time', 'std_time']
-            # 为每个时间测量添加列
+            # Add columns for each time measurement
             fieldnames.extend([f'time_{i}' for i in range(max_time_len)])
             
             writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -67,7 +67,7 @@ def export_times_to_csv(json_path):
                     'max_time': item['max_time'],
                     'std_time': item['std_time'],
                 }
-                # 添加各个时间测量值
+                # Add each time measurement value
                 for i, t in enumerate(item['times']):
                     row[f'time_{i}'] = t
                 
@@ -76,18 +76,18 @@ def export_times_to_csv(json_path):
     return csv_path, len(times_data)
 
 
-# 主程序
+# Main program
 if __name__ == "__main__":
-    print("开始导出时间数据到CSV文件...\n")
+    print("Starting to export time data to CSV files...\n")
     
     for log_path in logs_path:
         if os.path.exists(log_path):
             csv_path, row_count = export_times_to_csv(log_path)
-            print(f"已处理: {log_path}")
-            print(f"  输出文件: {csv_path}")
-            print(f"  行数: {row_count}")
+            print(f"Processed: {log_path}")
+            print(f"  Output file: {csv_path}")
+            print(f"  Number of rows: {row_count}")
             print()
         else:
-            print(f"文件不存在: {log_path}\n")
+            print(f"File does not exist: {log_path}\n")
     
-    print("完成!")
+    print("Done!")
