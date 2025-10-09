@@ -30,6 +30,14 @@ This project contains scripts and data for analyzing and tuning deep learning op
 
 - [`layer_0/` ~ `layer_9/`]: Tuning data and logs for each layer
   - `database_tuning_record.json`: Tuning records
+Each layer directory contains a `database_tuning_record.json` file, which records the kernel tuning experiment data for that layer. (Normally there are 1000 lines(trials) per layer)
+- Each line(trial) represents the tuning result for a kernel, including:
+  - The schedule information for the kernel
+  - The corresponding tile size parameters
+  - The execution time of the kernel
+  - Relevant hardware information (such as GPU model and configuration)
+
+These records are essential for analyzing and comparing the impact of different scheduling strategies and parameter configurations on performance.
   - `database_workload.json`: Workload information
   - `parsed_trials.csv`: Parsed experiment data
   - `times.csv`: Timing for each experiment
