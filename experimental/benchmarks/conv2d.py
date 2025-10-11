@@ -112,21 +112,23 @@ if __name__ == "__main__":
     )
     parser.add_argument("-l", "--logfile_parent", type=str, default=".")
     parser.add_argument("-t", "--trials", type=int, default=1000)
+    parser.add_argument("--start_layer", type=int, default=0, help="Start from which layer (default: 0)")
     args = parser.parse_args()
-
+    
     arch = args.arch
     logfile_parent = args.logfile_parent
     trials = args.trials
-
+    start_layer = args.start_layer
+    
     # Create results directory if not exists
     results_dir = "results"
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
-
+    
     # Create CSV file with timestamp
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     csv_filename = os.path.join(results_dir, f"conv2d_results_{timestamp}.csv")
-    
+        
     # Write CSV header
     with open(csv_filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
@@ -134,7 +136,7 @@ if __name__ == "__main__":
             'Layer', 'N', 'C', 'H', 'W', 'K', 'R', 'S', 'stride', 'padding', 'dilation',
             'Trials', 'Best Time (ms)', 'Std Dev (ms)', 'Tuning Time (min)', 'Status'
         ])
-
+    
         if arch == "cuda":
             target_name = "cuda"
             target = get_tvm_target()
@@ -143,20 +145,20 @@ if __name__ == "__main__":
             print("Archtecture doesn't support.")
             exit(0)
         
-        for i, shape in enumerate(shapes_b1):
+        for i, shape in enumerate(shapes_b1[start_layer:], start=start_layer):
             N, C, H, W, K, _, R, S, _, stride, padding, dilation, groups = shape
             input_shape = (N, C, H, W)
             filter_shape = (K, C, R, S)
             strides = (stride, stride)
             paddings = (padding, padding)
             dilations = (dilation, dilation)
-
+    
             logfile = os.path.join(logfile_parent, f"layer_{i}")
             
             # clean the files
             if os.path.exists(logfile):
                 shutil.rmtree(logfile)
-
+    
             try:
                 mod = create_conv2d_module(input_shape, filter_shape, strides, paddings, dilations, layout, dtype)
                 mean_time, std_time, tuning_time = ms_execute(mod, logfile, target, target_name, trials)
@@ -165,7 +167,7 @@ if __name__ == "__main__":
                 print(f"An error occurred during benchmark for layer {i}: {e}")
                 mean_time, std_time, tuning_time = -1, -1, -1
                 status = "Failed"
-
+    
             writer.writerow([
                 i, N, C, H, W, K, R, S, stride, padding, dilation,
                 trials, mean_time, std_time, tuning_time, status
