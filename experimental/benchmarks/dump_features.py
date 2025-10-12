@@ -6,6 +6,7 @@ import tvm.tir.tensor_intrin.cuda
 import tvm.topi as topi
 from tvm import te
 import csv
+from tqdm import tqdm
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = SCRIPT_DIR
@@ -55,12 +56,11 @@ def extract_features_to_csv(db, target, out_csv_path, layer_dir):
     tune_ctx = ms.TuneContext(target=target)
     records = db.get_all_tuning_records()
     features_list = []
-    for record in records:
+    for record in tqdm(records, desc=f"Layer {layer_dir}", unit="record"):
         sch = tvm.tir.Schedule(record.workload.mod)
         record.trace.apply_to_schedule(sch, remove_postproc=False)
         candidate = ms.MeasureCandidate(sch=sch, args_info=[])
         (features,) = extractor.extract_from(tune_ctx, candidates=[candidate])
-        # print(f"Features shape {features.shape}, layer_dir={layer_dir}")
         features_list.append(features.numpy().flatten())
     # Save to CSV
     with open(out_csv_path, "w", newline="") as f:
@@ -88,5 +88,9 @@ def process_layer(layer_dir):
     extract_features_to_csv(db, target, out_csv_path, layer_dir)
 
 if __name__ == "__main__":
+    from tqdm import tqdm
+    total_layers = len(layer_dirs)
     with multiprocessing.Pool() as pool:
-        pool.map(process_layer, layer_dirs)
+        with tqdm(total=total_layers, desc="Overall Layers", unit="layer") as pbar:
+            for _ in pool.imap_unordered(process_layer, layer_dirs):
+                pbar.update(1)
