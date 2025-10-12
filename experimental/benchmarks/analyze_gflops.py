@@ -12,22 +12,12 @@ def find_gflops_col(df):
             return col
     return None
 
-FILES = [
-    './layer_0/parsed_trials.csv',
-    './layer_1/parsed_trials.csv',
-    './layer_2/parsed_trials.csv',
-    './layer_3/parsed_trials.csv',
-    './layer_4/parsed_trials.csv',
-    './layer_5/parsed_trials.csv',
-    './layer_6/parsed_trials.csv',
-    './layer_7/parsed_trials.csv',
-    './layer_8/parsed_trials.csv',
-    './layer_9/parsed_trials.csv',
-]
+import glob
+FILES = [f for f in glob.glob("./layer_*/parsed_trials.csv")]
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    out_dir = script_dir
+    out_dir = os.path.join(script_dir, "analyze_gflops_output")
     os.makedirs(out_dir, exist_ok=True)
 
     stats_rows = []
@@ -42,12 +32,15 @@ def main():
             continue
         col = find_gflops_col(df)
         if col is None:
-            print(f'No gflops column found in {path}', file=sys.stderr)
+            print(f'No gflops column found in {path}. Available columns: {list(df.columns)}', file=sys.stderr)
             continue
-        series = pd.to_numeric(df[col], errors='coerce').dropna()
-        if series.empty:
-            print(f'No numeric gflops values in {path}', file=sys.stderr)
+        # Remove trailing dots and whitespace before conversion
+        cleaned = df[col].astype(str).str.strip().str.rstrip('.')
+        series = pd.to_numeric(cleaned, errors='coerce')
+        if series.dropna().empty:
+            print(f'No numeric gflops values in {path}. Sample values: {df[col].head(5).tolist()}', file=sys.stderr)
             continue
+        series = series.dropna()
         combined.append(pd.DataFrame({'layer': layer_name, 'gflops': series.values}))
 
         stats_rows.append({

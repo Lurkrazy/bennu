@@ -3,19 +3,9 @@ import csv
 import os
 import numpy as np
 
-logs_path = [
-    "./layer_0/database_tuning_record.json",
-    "./layer_1/database_tuning_record.json",
-    "./layer_2/database_tuning_record.json",
-    "./layer_3/database_tuning_record.json",
-    "./layer_4/database_tuning_record.json",
-    "./layer_5/database_tuning_record.json",
-    "./layer_6/database_tuning_record.json",
-    "./layer_7/database_tuning_record.json",
-    "./layer_8/database_tuning_record.json",
-    "./layer_9/database_tuning_record.json",
-]
-
+# use glob
+import glob
+logs_path = [f for f in glob.glob("./layer_*/database_tuning_record.json")]
 
 def export_times_to_csv(json_path):
     """

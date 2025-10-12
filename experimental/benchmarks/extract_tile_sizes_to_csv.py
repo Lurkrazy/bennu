@@ -12,18 +12,23 @@ import csv
 
 # locate project root (two levels up from this script: /workspace/.../benchmarks)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, os.pardir, os.pardir))
+PROJECT_ROOT = SCRIPT_DIR
+print(f"DEBUG: SCRIPT_DIR={SCRIPT_DIR}")
+print(f"DEBUG: PROJECT_ROOT={PROJECT_ROOT}")
 
-layer_dirs = [f"layer_{i}" for i in range(10)]
+import glob
+layer_dirs = [os.path.basename(d) for d in glob.glob(os.path.join(PROJECT_ROOT, "layer_*")) if os.path.isdir(d)]
+print(f"Found {len(layer_dirs)} layer directories.")
 json_filename = "database_tuning_record.json"
 per_layer_csv_name = "tile_sizes.csv"
 combined_csv_path = os.path.join(SCRIPT_DIR, "all_layers_tile_sizes.csv")
 
 combined_rows = []
 
-for layer in layer_dirs:
-    json_path = os.path.join(PROJECT_ROOT, layer, json_filename)
-    csv_path = os.path.join(PROJECT_ROOT, layer, per_layer_csv_name)
+for layer_path in layer_dirs:
+    layer = os.path.basename(layer_path)
+    json_path = os.path.join(layer_path, json_filename)
+    csv_path = os.path.join(layer_path, per_layer_csv_name)
 
     if not os.path.exists(json_path):
         # skip missing layers
